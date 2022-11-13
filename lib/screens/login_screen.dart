@@ -1,10 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:ninety/api/user.dart';
 import 'package:ninety/constants/constants.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:ninety/screens/forgot_password_screen.dart';
+import 'package:ninety/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _invalidEmail = false;
   bool _invalidPassword = false;
+  bool _isLoading = false;
 
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
@@ -35,18 +37,31 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
-  signInUser() async {
-    try {
-      var result =
-          await signIn(_emailController.text, _passwordController.text);
-      var decodedResponse = jsonDecode(utf8.decode(result.bodyBytes)) as Map;
-      if (decodedResponse['status'] == 200) {
-        // Sign in success
-      } else {
-        // Invalid username or password
-      }
-    } catch (e) {
-      // Network error occured
+  signInUser(context) async {
+    var userService = UserService();
+    var appUser = await userService.signIn(
+        _emailController.text, _passwordController.text);
+    if (appUser == null) {
+      // Error in logging in
+      setState(() {
+        _isLoading = false;
+      });
+      final snackBar = SnackBar(
+        content: const Text('Invalid username or password'),
+        action: SnackBarAction(
+          label: 'okay',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      print("Sign in user: " + appUser.email);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -222,7 +237,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 10,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(_createForgotPasswordRoute());
+                    },
                     child: const Text(
                       "Forgot Password?",
                       style: TextStyle(color: Color(0xfffF50057)),
@@ -232,26 +249,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 5,
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() == true) {
-                        signInUser();
-                      }
-                    },
+                    onPressed: _isLoading
+                        ? null
+                        : () {
+                            if (_formKey.currentState?.validate() == true) {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              signInUser(context);
+                            }
+                          },
                     style: raisedButtonStylePurple,
-                    child: const Text(
-                      "Log in",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: _isLoading
+                        ? const SpinKitPulse(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            "Log in",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   const Text("Don't have an account?"),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(_createRegisterRoute());
+                    },
                     child: const Text(
                       "Register",
                       style: TextStyle(color: Color(0xfffF50057)),
@@ -265,4 +293,42 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+Route _createRegisterRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        const RegisterScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
+Route _createForgotPasswordRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        const ForgotPasswordScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ninety/screens/login_screen.dart';
+import 'package:ninety/screens/register_screen.dart';
 import '../constants/constants.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -58,7 +59,9 @@ class GetStartedScreen extends StatelessWidget {
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(_createRegisterRoute());
+              },
               style: raisedButtonStylePurple,
               child: const Text(
                 "Create Account",
@@ -81,6 +84,25 @@ Route _createLoginRoute() {
         const LoginScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
+Route _createRegisterRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        const RegisterScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 

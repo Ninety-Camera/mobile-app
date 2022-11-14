@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -71,8 +72,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
+  getFirebaseToken() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    print("FCM token is: " + fcmToken.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
+    getFirebaseToken();
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(

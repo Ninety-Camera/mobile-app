@@ -40,6 +40,8 @@ dependencies:
   form_field_validator: ^1.1.0
   http: ^0.13.5
   flutter_spinkit: ^5.1.0
+  firebase_core: ^2.2.0
+  firebase_messaging: ^14.1.0
 
 dev_dependencies:
   flutter_test:

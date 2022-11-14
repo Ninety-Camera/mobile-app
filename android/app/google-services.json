@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "900729736011",
+    "project_id": "ninety-camera",
+    "storage_bucket": "ninety-camera.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900729736011:android:0b277df060105cf0b576ce",
+        "android_client_info": {
+          "package_name": "com.example.ninety"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900729736011-bbf0a6785r3saior778qsoj621s013fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeGB_nckFz5Jn3cWlsUvV_bWp17eQWF-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900729736011-bbf0a6785r3saior778qsoj621s013fm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-const double PADDING_TOP = 50;
+const double PADDING_TOP = 80;
 const double PADDING_LEFT = 30;
 const double PADDING_RIGHT = 30;
 
 const BACKEND_URL = "https://ninetycamera.azurewebsites.net/api/";
+
+const String AUTH_TOKEN = "AUTH_TOKEN";
 
 Color mainPurple = Color(0xfff6C63FF);
 

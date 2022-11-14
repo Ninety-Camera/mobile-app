@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ninety/constants/constants.dart';
 import 'package:ninety/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   Future<AppUser?> register({email, password, firstName, lastName}) async {
@@ -24,6 +25,8 @@ class UserService {
       if (decodedResponse['status'] == 201) {
         var data = decodedResponse['data'] as Map<String, dynamic>?;
         var user = data!["user"];
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(AUTH_TOKEN, "Bearer " + data["token"]);
         return AppUser.fromJson(user);
       }
       return null;
@@ -48,6 +51,8 @@ class UserService {
       if (decodedResponse['status'] == 200) {
         var data = decodedResponse['data'] as Map<String, dynamic>?;
         var user = data!["user"];
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(AUTH_TOKEN, "Bearer " + data["token"]);
         return AppUser.fromJson(user);
       }
       return null;

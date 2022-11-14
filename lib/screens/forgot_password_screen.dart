@@ -33,9 +33,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     var result = await userService.resetPassword(_emailController.text);
     if (result) {
       // Success
+
     } else {
       // error in sending the result
+
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -44,121 +49,124 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       appBar: AppBar(
         backgroundColor: mainPurple,
       ),
-      body: Container(
-          padding: const EdgeInsets.only(
-            top: PADDING_TOP,
-            right: PADDING_RIGHT,
-            left: PADDING_LEFT,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Reset your Password",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const Text(
-                "Enter your email to reset the password",
-                style: TextStyle(
-                  color: Color(0xfffACB2B8),
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              SizedBox(
-                height: 200,
-                child: SvgPicture.asset(
-                  "assets/images/login-screen.svg",
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    labelStyle: TextStyle(
-                      color: Color(0xfffCED4DA),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: Color(0xfffCED4DA),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: Color(0xfffCED4DA),
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: Colors.red,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: Colors.red,
-                      ),
-                    ),
+      body: SingleChildScrollView(
+        child: Container(
+            padding: const EdgeInsets.only(
+              top: PADDING_TOP,
+              right: PADDING_RIGHT,
+              left: PADDING_LEFT,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Reset your Password",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    var _error = EmailValidator(errorText: "Enter Valid email");
-                    if (!_error.isValid(value)) {
-                      return _error.errorText;
-                    } else {
-                      resetPassword(context);
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: _isLoading
-                    ? null
-                    : () {
-                        if (_formKey.currentState?.validate() == true) {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          resetPassword(context);
-                        }
-                      },
-                style: raisedButtonStylePurple,
-                child: _isLoading
-                    ? const SpinKitPulse(
-                        color: Colors.white,
-                      )
-                    : const Text(
-                        "Reset Password",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                const Text(
+                  "Enter your email to reset the password",
+                  style: TextStyle(
+                    color: Color(0xfffACB2B8),
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SizedBox(
+                  height: 200,
+                  child: SvgPicture.asset(
+                    "assets/images/login-screen.svg",
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: "Email",
+                      labelStyle: TextStyle(
+                        color: Color(0xfffCED4DA),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: Color(0xfffCED4DA),
                         ),
                       ),
-              ),
-            ],
-          )),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: Color(0xfffCED4DA),
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: Colors.red,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      var _error =
+                          EmailValidator(errorText: "Enter Valid email");
+                      if (!_error.isValid(value)) {
+                        return _error.errorText;
+                      } else {
+                        resetPassword(context);
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          if (_formKey.currentState?.validate() == true) {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            resetPassword(context);
+                          }
+                        },
+                  style: raisedButtonStylePurple,
+                  child: _isLoading
+                      ? const SpinKitPulse(
+                          color: Colors.white,
+                        )
+                      : const Text(
+                          "Reset Password",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                ),
+              ],
+            )),
+      ),
     );
   }
 }

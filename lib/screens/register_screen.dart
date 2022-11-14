@@ -36,12 +36,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    super.dispose();
   }
 
   registerUser(context) async {
@@ -81,351 +81,356 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     getFirebaseToken();
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(
-          top: PADDING_TOP,
-          left: PADDING_LEFT,
-          right: PADDING_RIGHT,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "Register \nwith Us",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Icon(
-                  Icons.person_add,
-                  size: 50,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(
-                      labelText: "First Name",
-                      labelStyle: TextStyle(
-                        color: Color(0xfffCED4DA),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          padding: const EdgeInsets.only(
+            top: PADDING_TOP,
+            left: PADDING_LEFT,
+            right: PADDING_RIGHT,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "Register \nwith Us",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
                     ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return "First name is required!";
-                      }
-                      return null;
-                    },
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(
-                      labelText: "Last Name",
-                      labelStyle: TextStyle(
-                        color: Color(0xfffCED4DA),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value != null && value.isEmpty) {
-                        return "Last name is required!";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      labelStyle: TextStyle(
-                        color: Color(0xfffCED4DA),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      var _error =
-                          EmailValidator(errorText: "Enter Valid email");
-                      if (!_error.isValid(value)) {
-                        return _error.errorText;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Password",
-                      labelStyle: TextStyle(
-                        color: Color(0xfffCED4DA),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      var _requiredValidator =
-                          RequiredValidator(errorText: "Password is required!");
-                      var _minLengthValidator = MinLengthValidator(8,
-                          errorText: 'Password must be at least 8 digits long');
-                      var _patternValidator = PatternValidator(
-                          r'(?=.*?[#?!@$%^&*-])',
-                          errorText:
-                              'Passwords must have at least one special character');
-
-                      if (!_requiredValidator.isValid(value)) {
-                        return _requiredValidator.errorText;
-                      } else if (!_minLengthValidator.isValid(value)) {
-                        return _minLengthValidator.errorText;
-                      } else if (!_patternValidator.isValid(value)) {
-                        return _patternValidator.errorText;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Confirm Password",
-                      labelStyle: TextStyle(
-                        color: Color(0xfffCED4DA),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Color(0xfffCED4DA),
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      var _requiredValidator =
-                          RequiredValidator(errorText: "Password is required!");
-                      var _minLengthValidator = MinLengthValidator(8,
-                          errorText: 'Password must be at least 8 digits long');
-                      var _patternValidator = PatternValidator(
-                          r'(?=.*?[#?!@$%^&*-])',
-                          errorText:
-                              'Passwords must have at least one special character');
-
-                      if (!_requiredValidator.isValid(value)) {
-                        return _requiredValidator.errorText;
-                      } else if (!_minLengthValidator.isValid(value)) {
-                        return _minLengthValidator.errorText;
-                      } else if (!_patternValidator.isValid(value)) {
-                        return _patternValidator.errorText;
-                      } else if (value != _passwordController.text) {
-                        return "Passwords should match";
-                      }
-
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: _isLoading
-                        ? null
-                        : () {
-                            if (_formKey.currentState?.validate() == true) {
-                              setState(() {
-                                _isLoading = true;
-                              });
-                              registerUser(context);
-                            }
-                          },
-                    style: raisedButtonStylePurple,
-                    child: _isLoading
-                        ? const SpinKitPulse(
-                            color: Colors.white,
-                          )
-                        : const Text(
-                            "Create Account",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text("Already have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(_createLoginRoute());
-                    },
-                    child: const Text(
-                      "Sign in",
-                      style: TextStyle(
-                        color: Color(0xfffF50057),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  Icon(
+                    Icons.person_add,
+                    size: 50,
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 40,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
+                        labelText: "First Name",
+                        labelStyle: TextStyle(
+                          color: Color(0xfffCED4DA),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value != null && value.isEmpty) {
+                          return "First name is required!";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                        labelText: "Last Name",
+                        labelStyle: TextStyle(
+                          color: Color(0xfffCED4DA),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value != null && value.isEmpty) {
+                          return "Last name is required!";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                        labelStyle: TextStyle(
+                          color: Color(0xfffCED4DA),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        var _error =
+                            EmailValidator(errorText: "Enter Valid email");
+                        if (!_error.isValid(value)) {
+                          return _error.errorText;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: "Password",
+                        labelStyle: TextStyle(
+                          color: Color(0xfffCED4DA),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        var _requiredValidator = RequiredValidator(
+                            errorText: "Password is required!");
+                        var _minLengthValidator = MinLengthValidator(8,
+                            errorText:
+                                'Password must be at least 8 digits long');
+                        var _patternValidator = PatternValidator(
+                            r'(?=.*?[#?!@$%^&*-])',
+                            errorText:
+                                'Passwords must have at least one special character');
+
+                        if (!_requiredValidator.isValid(value)) {
+                          return _requiredValidator.errorText;
+                        } else if (!_minLengthValidator.isValid(value)) {
+                          return _minLengthValidator.errorText;
+                        } else if (!_patternValidator.isValid(value)) {
+                          return _patternValidator.errorText;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: "Confirm Password",
+                        labelStyle: TextStyle(
+                          color: Color(0xfffCED4DA),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Color(0xfffCED4DA),
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 2,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        var _requiredValidator = RequiredValidator(
+                            errorText: "Password is required!");
+                        var _minLengthValidator = MinLengthValidator(8,
+                            errorText:
+                                'Password must be at least 8 digits long');
+                        var _patternValidator = PatternValidator(
+                            r'(?=.*?[#?!@$%^&*-])',
+                            errorText:
+                                'Passwords must have at least one special character');
+
+                        if (!_requiredValidator.isValid(value)) {
+                          return _requiredValidator.errorText;
+                        } else if (!_minLengthValidator.isValid(value)) {
+                          return _minLengthValidator.errorText;
+                        } else if (!_patternValidator.isValid(value)) {
+                          return _patternValidator.errorText;
+                        } else if (value != _passwordController.text) {
+                          return "Passwords should match";
+                        }
+
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              if (_formKey.currentState?.validate() == true) {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                registerUser(context);
+                              }
+                            },
+                      style: raisedButtonStylePurple,
+                      child: _isLoading
+                          ? const SpinKitPulse(
+                              color: Colors.white,
+                            )
+                          : const Text(
+                              "Create Account",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text("Already have an account?"),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(_createLoginRoute());
+                      },
+                      child: const Text(
+                        "Sign in",
+                        style: TextStyle(
+                          color: Color(0xfffF50057),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

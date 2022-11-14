@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:ninety/api/user.dart';
 import 'package:ninety/constants/constants.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -27,7 +28,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     _emailController.dispose();
   }
 
-  resetPassword(context) async {}
+  resetPassword(context) async {
+    var userService = UserService();
+    var result = await userService.resetPassword(_emailController.text);
+    if (result) {
+      // Success
+    } else {
+      // error in sending the result
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +123,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     var _error = EmailValidator(errorText: "Enter Valid email");
                     if (!_error.isValid(value)) {
                       return _error.errorText;
-                    } else {}
+                    } else {
+                      resetPassword(context);
+                    }
                     return null;
                   },
                 ),

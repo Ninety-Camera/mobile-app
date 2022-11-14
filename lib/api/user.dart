@@ -52,8 +52,27 @@ class UserService {
       }
       return null;
     } catch (e) {
-      print("Error created: " + e.toString());
       return null;
+    }
+  }
+
+  Future<bool> resetPassword(email) async {
+    try {
+      var response = await http.post(
+        Uri.parse(
+          "$BACKEND_URL/user/reset",
+        ),
+        body: {
+          "email": email,
+        },
+      );
+      var decodedResponse = jsonDecode(response.body);
+      if (decodedResponse['status'] == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 }

@@ -6,6 +6,7 @@ import 'package:ninety/models/intrusion.dart';
 import 'package:ninety/models/user.dart';
 import 'package:ninety/screens/intrusion_details.dart';
 import 'package:ninety/screens/previous_intrusions.dart';
+import 'package:ninety/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
 import '../providers/system.dart';
 
@@ -88,7 +89,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        _createSettingsScreenRoute(
+                          widget.appUser.cctvSystem!.id,
+                          widget.appUser,
+                        ),
+                      );
+                    },
                     icon: const Icon(
                       Icons.settings,
                       size: 25,
@@ -291,6 +299,27 @@ Route _createPreviousIntrusionsRoute(systemId) {
         PreviousIntrusions(systemId: systemId),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
+Route _createSettingsScreenRoute(systemId, appUser) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => SettingsScreen(
+      systemId: systemId,
+      appUser: appUser,
+    ),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(-1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 

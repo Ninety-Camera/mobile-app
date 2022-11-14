@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class System with ChangeNotifier {
   String _systemStatus = "STOP";
@@ -8,9 +7,11 @@ class System with ChangeNotifier {
 
   void stopSystem() {
     _systemStatus = 'STOP';
+    notifyListeners();
   }
 
   void startSystem() {
     _systemStatus = 'RUNNING';
+    notifyListeners();
   }
 }

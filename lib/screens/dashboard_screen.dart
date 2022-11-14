@@ -6,6 +6,8 @@ import 'package:ninety/models/intrusion.dart';
 import 'package:ninety/models/user.dart';
 import 'package:ninety/screens/intrusion_details.dart';
 import 'package:ninety/screens/previous_intrusions.dart';
+import 'package:provider/provider.dart';
+import '../providers/system.dart';
 
 class DashboardScreen extends StatefulWidget {
   final AppUser appUser;
@@ -54,9 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       setState(() {
         _lastestIntrusion = _intrusion;
       });
-    } else {
-      print("No intrusion get");
-    }
+    } else {}
   }
 
   @override
@@ -67,8 +67,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _getLatestIntrusion();
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -118,9 +116,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                         Text(
-                          widget.appUser.cctvSystem!.status.toString(),
-                          style: const TextStyle(
-                            color: Color(0xff00FF47),
+                          context.watch<System>().systemStatus,
+                          style: TextStyle(
+                            color: context.watch<System>().systemStatus ==
+                                    'RUNNING'
+                                ? Color(0xff00FF47)
+                                : Colors.red,
                             fontWeight: FontWeight.bold,
                           ),
                         )

@@ -4,10 +4,13 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:ninety/api/user.dart';
 import 'package:ninety/constants/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:ninety/models/user.dart';
+import 'package:ninety/providers/system.dart';
 import 'package:ninety/screens/dashboard_screen.dart';
 import 'package:ninety/screens/forgot_password_screen.dart';
 import 'package:ninety/screens/qr_scanning_screen.dart';
 import 'package:ninety/screens/register_screen.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -39,7 +42,15 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  signInUser(context) async {
+  setSystemStatus(BuildContext context, AppUser appUser) {
+    if (appUser.cctvSystem!.status == 'RUNNING') {
+      context.read<System>().startSystem();
+    } else {
+      context.read<System>().stopSystem();
+    }
+  }
+
+  signInUser(BuildContext context) async {
     var userService = UserService();
     var appUser = await userService.signIn(
         _emailController.text, _passwordController.text);
@@ -63,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (appUser.cctvSystem == null) {
         Navigator.of(context).push(_createScanQRCodeRoute());
       } else {
+        setSystemStatus(context, appUser);
         Navigator.of(context).push(_createDashboardRoute(appUser));
       }
       setState(() {

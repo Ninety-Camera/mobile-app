@@ -5,7 +5,7 @@ class Intrusion {
   final String id;
   final String occuredAt;
   final List<IntrusionImage> intrusionImages;
-  final IntrusionVideo intrusionVideo;
+  final IntrusionVideo? intrusionVideo;
 
   Intrusion({
     required this.id,
@@ -23,7 +23,9 @@ class Intrusion {
       id: json["id"],
       occuredAt: json["occuredAt"],
       intrusionImages: images,
-      intrusionVideo: IntrusionVideo.fromJson(json["Intrusion_Video"]),
+      intrusionVideo: json["Intrusion_Video"] != null
+          ? IntrusionVideo.fromJson(json["Intrusion_Video"])
+          : null,
     );
   }
 }

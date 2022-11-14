@@ -24,7 +24,9 @@ class _IntrusionDetailsState extends State<IntrusionDetails> {
     // offers several different constructors to play videos from assets, files,
     // or the internet.
     _controller = VideoPlayerController.network(
-      widget.intrusion.intrusionVideo.videoLink,
+      widget.intrusion.intrusionVideo != null
+          ? widget.intrusion.intrusionVideo!.videoLink
+          : "",
     );
 
     _initializeVideoPlayerFuture = _controller.initialize().then((value) {
@@ -56,65 +58,73 @@ class _IntrusionDetailsState extends State<IntrusionDetails> {
           ),
           child: Column(
             children: [
-              FutureBuilder(
-                future: _initializeVideoPlayerFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    // If the VideoPlayerController has finished initialization, use
-                    // the data it provides to limit the aspect ratio of the video.
+              widget.intrusion.intrusionVideo != null
+                  ? FutureBuilder(
+                      future: _initializeVideoPlayerFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          // If the VideoPlayerController has finished initialization, use
+                          // the data it provides to limit the aspect ratio of the video.
 
-                    return Column(
-                      children: [
-                        AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          // Use the VideoPlayer widget to display the video.
-                          child: VideoPlayer(_controller),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Center(
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Color(0xfffF50057),
-                                minimumSize: const Size(100, 50),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                ),
+                          return Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: _controller.value.aspectRatio,
+                                // Use the VideoPlayer widget to display the video.
+                                child: VideoPlayer(_controller),
                               ),
-                              child: Icon(
-                                _controller.value.isPlaying
-                                    ? Icons.pause
-                                    : Icons.play_arrow,
+                              const SizedBox(
+                                height: 5,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  _controller.value.isPlaying
-                                      ? _controller.pause()
-                                      : _controller.play();
-                                });
-                              }),
-                        ),
-                      ],
-                    );
-                  } else {
-                    // If the VideoPlayerController is still initializing, show a
-                    // loading spinner.
-                    return Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        child: CircularProgressIndicator(
-                          color: mainPurple,
-                        ),
+                              Center(
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Color(0xfffF50057),
+                                      minimumSize: const Size(100, 50),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16),
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      _controller.value.isPlaying
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _controller.value.isPlaying
+                                            ? _controller.pause()
+                                            : _controller.play();
+                                      });
+                                    }),
+                              ),
+                            ],
+                          );
+                        } else {
+                          // If the VideoPlayerController is still initializing, show a
+                          // loading spinner.
+                          return Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              child: CircularProgressIndicator(
+                                color: mainPurple,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    )
+                  : const Text(
+                      "No any video found",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
                       ),
-                    );
-                  }
-                },
-              ),
+                    ),
               const SizedBox(
                 height: 5,
               ),

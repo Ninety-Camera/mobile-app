@@ -6,7 +6,7 @@ class AppUser {
   final String email;
   final String id;
   final String role;
-  final CCTV_System? cctvSystem;
+  CCTV_System? cctvSystem;
 
   AppUser({
     required this.lastName,

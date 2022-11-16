@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ninety/constants/constants.dart';
+import 'package:ninety/models/user.dart';
 import 'package:ninety/providers/system.dart';
 import 'package:ninety/screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ninety/screens/qr_scanning_screen.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -31,7 +33,7 @@ void main() async {
   );
 
   print('User granted permission: ${settings.authorizationStatus}');
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
@@ -61,7 +63,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: mainColor,
         fontFamily: "Inter",
       ),
-      initialRoute: HomeScreen.routeName,
       home: const HomeScreen(),
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.

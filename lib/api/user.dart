@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:ninety/constants/constants.dart';
@@ -6,6 +7,14 @@ import 'package:ninety/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
+  var _authToken;
+
+  _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    _authToken = prefs.getString(AUTH_TOKEN);
+    return _authToken;
+  }
+
   Future<AppUser?> register({email, password, firstName, lastName}) async {
     try {
       var response = await http.post(
@@ -26,6 +35,7 @@ class UserService {
         var data = decodedResponse['data'] as Map<String, dynamic>?;
         var user = data!["user"];
         final prefs = await SharedPreferences.getInstance();
+        _authToken = "Bearer " + data["token"];
         await prefs.setString(AUTH_TOKEN, "Bearer " + data["token"]);
         return AppUser.fromJson(user);
       }
@@ -52,12 +62,35 @@ class UserService {
         var data = decodedResponse['data'] as Map<String, dynamic>?;
         var user = data!["user"];
         final prefs = await SharedPreferences.getInstance();
+        _authToken = "Bearer " + data["token"];
         await prefs.setString(AUTH_TOKEN, "Bearer " + data["token"]);
         return AppUser.fromJson(user);
       }
       return null;
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<bool> checkUserMobileDevice(userId) async {
+    _authToken ??= await _getToken();
+    try {
+      var response = await http.get(
+        Uri.parse(
+          "$BACKEND_URL/user/mobile/check/$userId",
+        ),
+        headers: {
+          HttpHeaders.authorizationHeader: _authToken,
+        },
+      );
+      var decodedResponse = jsonDecode(response.body);
+      print("Response is: " + decodedResponse.toString());
+      if (decodedResponse['status'] == 200) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

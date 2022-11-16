@@ -136,7 +136,9 @@ class _IntrusionDetailsState extends State<IntrusionDetails> {
                     (item) => Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       child: Image.network(
-                        item.link,
+                        item.link.isNotEmpty
+                            ? item.link
+                            : "https://ninetycamera.blob.core.windows.net/intrusion-images/broken-image.png",
                       ),
                     ),
                   )

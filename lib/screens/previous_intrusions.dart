@@ -82,7 +82,7 @@ class _PreviousIntrusionsState extends State<PreviousIntrusions> {
                 Image.network(
                   intrusion.intrusionImages.isNotEmpty
                       ? intrusion.intrusionImages[0].link
-                      : "",
+                      : "https://ninetycamera.blob.core.windows.net/intrusion-images/broken-image.png",
                 ),
                 const SizedBox(
                   height: 5,

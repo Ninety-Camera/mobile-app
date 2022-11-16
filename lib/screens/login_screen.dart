@@ -72,10 +72,20 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       if (appUser.cctvSystem == null) {
-        Navigator.of(context).push(_createScanQRCodeRoute());
+        Navigator.of(context).push(_createScanQRCodeRoute(appUser));
       } else {
         setSystemStatus(context, appUser);
-        Navigator.of(context).push(_createDashboardRoute(appUser));
+        print("In here!");
+        var _deviceResult = await userService.checkUserMobileDevice(appUser.id);
+        print("Device result is: " + _deviceResult.toString());
+        if (_deviceResult) {
+          Navigator.of(context).pushAndRemoveUntil(
+              _createDashboardRoute(appUser), (route) => false);
+        } else if (_deviceResult == false) {
+          Navigator.of(context).push(_createScanQRCodeRoute(appUser));
+        } else {
+          print("Error occured");
+        }
       }
       setState(() {
         _isLoading = false;
@@ -357,10 +367,12 @@ Route _createForgotPasswordRoute() {
   );
 }
 
-Route _createScanQRCodeRoute() {
+Route _createScanQRCodeRoute(appUser) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
-        const QRCodeScanningScreen(),
+        QRCodeScanningScreen(
+      appUser: appUser,
+    ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

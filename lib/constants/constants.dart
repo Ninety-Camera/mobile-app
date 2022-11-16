@@ -14,7 +14,7 @@ final ButtonStyle raisedButtonStyleRed = ElevatedButton.styleFrom(
   foregroundColor: Colors.white,
   backgroundColor: Color(0xfffF50057),
   minimumSize: const Size(double.infinity, 50),
-  padding: EdgeInsets.symmetric(horizontal: 16),
+  padding: const EdgeInsets.symmetric(horizontal: 16),
   shape: const RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(5)),
   ),
@@ -24,7 +24,7 @@ final ButtonStyle raisedButtonStylePurple = ElevatedButton.styleFrom(
   foregroundColor: Colors.white,
   backgroundColor: Color(0xfff6C63FF),
   minimumSize: const Size(double.infinity, 50),
-  padding: EdgeInsets.symmetric(horizontal: 16),
+  padding: const EdgeInsets.symmetric(horizontal: 16),
   shape: const RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(5)),
   ),

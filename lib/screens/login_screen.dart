@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:ninety/api/system_service.dart';
 import 'package:ninety/api/user.dart';
 import 'package:ninety/constants/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -83,11 +85,27 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         var deviceResult = await userService.checkUserMobileDevice(appUser.id);
-        if (deviceResult && mounted) {
+        if (deviceResult) {
           Navigator.of(context).pushAndRemoveUntil(
-              _createDashboardRoute(appUser), (route) => false);
+            _createDashboardRoute(appUser),
+            (route) => false,
+          );
         } else if (deviceResult == false) {
-          Navigator.of(context).push(_createScanQRCodeRoute(appUser));
+          if (appUser.role == 'OWNER') {
+            final fcmToken = await FirebaseMessaging.instance.getToken();
+            var systemService = SystemService();
+            var newAppUser = await systemService.susbscribeForSystem(
+                appUser, appUser.cctvSystem!.id, fcmToken.toString());
+            if (appUser != null && mounted) {
+              Navigator.of(context).pushAndRemoveUntil(
+                _createDashboardRoute(newAppUser),
+                (route) => false,
+              );
+            }
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+                _createDashboardRoute(appUser), (route) => false);
+          }
         } else {
           final snackBar = SnackBar(
             content: const Text('And unknown error occured '),

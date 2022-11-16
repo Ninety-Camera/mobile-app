@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ninety/api/intrusion_service.dart';
 import 'package:ninety/constants/constants.dart';
+import 'package:ninety/main.dart';
 import 'package:ninety/models/intrusion.dart';
 import 'package:ninety/screens/intrusion_details.dart';
 
@@ -24,6 +25,23 @@ class _PreviousIntrusionsState extends State<PreviousIntrusions> {
       setState(() {
         _previousIntrusions = intrusions;
       });
+    } else {
+      final snackBar = SnackBar(
+        content: const Text('Error in getting the previous intrusions'),
+        action: SnackBarAction(
+          label: 'okay',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      );
+      if (!mounted) {
+        return;
+      }
+      if (navigatorKey.currentContext != null) {
+        ScaffoldMessenger.of(navigatorKey.currentContext!)
+            .showSnackBar(snackBar);
+      }
     }
   }
 

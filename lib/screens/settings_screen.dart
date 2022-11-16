@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ninety/api/camera_service.dart';
 import 'package:ninety/constants/constants.dart';
+import 'package:ninety/main.dart';
 import 'package:ninety/models/camera.dart';
 import 'package:ninety/models/user.dart';
 import 'package:ninety/providers/system.dart';
@@ -25,12 +26,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<Camera> _systemCameras = [];
 
   _getCameras() async {
-    var _camService = CameraService();
-    var _result = await _camService.getAllCameras(widget.systemId);
-    if (_result != null) {
+    var camService = CameraService();
+    var result = await camService.getAllCameras(widget.systemId);
+    if (result != null) {
       setState(() {
-        _systemCameras = _result;
+        _systemCameras = result;
       });
+    } else {
+      final snackBar = SnackBar(
+        content: const Text('Error in getting the system cameras'),
+        action: SnackBarAction(
+          label: 'okay',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      );
+      if (!mounted) {
+        return;
+      }
+      if (navigatorKey.currentContext != null) {
+        ScaffoldMessenger.of(navigatorKey.currentContext!)
+            .showSnackBar(snackBar);
+      }
     }
   }
 

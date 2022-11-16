@@ -1,10 +1,10 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:ninety/api/user.dart';
 import 'package:ninety/constants/constants.dart';
 import 'package:ninety/screens/login_screen.dart';
+import 'package:ninety/screens/qr_scanning_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -63,23 +63,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
       );
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      print("Created user: " + appUser.email);
+      Navigator.of(context).push(_createScanQRCodeRoute(appUser));
     }
     setState(() {
       _isLoading = false;
     });
   }
 
-  getFirebaseToken() async {
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    print("FCM token is: " + fcmToken.toString());
-  }
-
   @override
   Widget build(BuildContext context) {
-    getFirebaseToken();
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -441,6 +438,27 @@ Route _createLoginRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
         const LoginScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
+Route _createScanQRCodeRoute(appUser) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        QRCodeScanningScreen(
+      appUser: appUser,
+    ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

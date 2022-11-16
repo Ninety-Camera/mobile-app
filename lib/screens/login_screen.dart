@@ -68,23 +68,40 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
       );
-
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       if (appUser.cctvSystem == null) {
-        Navigator.of(context).push(_createScanQRCodeRoute(appUser));
+        if (mounted) {
+          Navigator.of(context).push(_createScanQRCodeRoute(appUser));
+        }
       } else {
-        setSystemStatus(context, appUser);
-        print("In here!");
-        var _deviceResult = await userService.checkUserMobileDevice(appUser.id);
-        print("Device result is: " + _deviceResult.toString());
-        if (_deviceResult) {
+        if (mounted) {
+          setSystemStatus(context, appUser);
+        }
+
+        var deviceResult = await userService.checkUserMobileDevice(appUser.id);
+        if (deviceResult && mounted) {
           Navigator.of(context).pushAndRemoveUntil(
               _createDashboardRoute(appUser), (route) => false);
-        } else if (_deviceResult == false) {
+        } else if (deviceResult == false) {
           Navigator.of(context).push(_createScanQRCodeRoute(appUser));
         } else {
-          print("Error occured");
+          final snackBar = SnackBar(
+            content: const Text('And unknown error occured '),
+            action: SnackBarAction(
+              label: 'okay',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+          );
+          if (!mounted) {
+            return;
+          }
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       }
       setState(() {
@@ -179,13 +196,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
-                        var _error =
+                        var error =
                             EmailValidator(errorText: "Enter Valid email");
-                        if (!_error.isValid(value)) {
+                        if (!error.isValid(value)) {
                           setState(() {
                             _invalidEmail = true;
                           });
-                          return _error.errorText;
+                          return error.errorText;
                         } else {
                           setState(() {
                             _invalidEmail = false;
@@ -238,24 +255,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
-                        var _requiredValidator = RequiredValidator(
+                        var requiredValidator = RequiredValidator(
                             errorText: "Password is required!");
-                        var _minLengthValidator = MinLengthValidator(8,
+                        var minLengthValidator = MinLengthValidator(8,
                             errorText:
                                 'Password must be at least 8 digits long');
-                        var _patternValidator = PatternValidator(
+                        var patternValidator = PatternValidator(
                             r'(?=.*?[#?!@$%^&*-])',
                             errorText:
                                 'Passwords must have at least one special character');
                         setState(() {
                           _invalidPassword = true;
                         });
-                        if (!_requiredValidator.isValid(value)) {
-                          return _requiredValidator.errorText;
-                        } else if (!_minLengthValidator.isValid(value)) {
-                          return _minLengthValidator.errorText;
-                        } else if (!_patternValidator.isValid(value)) {
-                          return _patternValidator.errorText;
+                        if (!requiredValidator.isValid(value)) {
+                          return requiredValidator.errorText;
+                        } else if (!minLengthValidator.isValid(value)) {
+                          return minLengthValidator.errorText;
+                        } else if (!patternValidator.isValid(value)) {
+                          return patternValidator.errorText;
                         } else {
                           setState(() {
                             _invalidPassword = false;

@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:ninety/api/user.dart';
 import 'package:ninety/constants/constants.dart';
+import 'package:ninety/main.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -33,10 +34,42 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     var result = await userService.resetPassword(_emailController.text);
     if (result) {
       // Success
+      final snackBar = SnackBar(
+        content: const Text('Successfully sended the email'),
+        action: SnackBarAction(
+          label: 'okay',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      );
+      if (!mounted) {
+        return;
+      }
 
+      if (navigatorKey.currentContext != null) {
+        ScaffoldMessenger.of(navigatorKey.currentContext!)
+            .showSnackBar(snackBar);
+      }
     } else {
       // error in sending the result
+      final snackBar = SnackBar(
+        content: const Text('Error in sending the email'),
+        action: SnackBarAction(
+          label: 'okay',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      );
+      if (!mounted) {
+        return;
+      }
 
+      if (navigatorKey.currentContext != null) {
+        ScaffoldMessenger.of(navigatorKey.currentContext!)
+            .showSnackBar(snackBar);
+      }
     }
     setState(() {
       _isLoading = false;

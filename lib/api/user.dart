@@ -94,7 +94,7 @@ class UserService {
     }
   }
 
-  Future<bool> resetPassword(email) async {
+  Future<AppUser?> resetPassword(email) async {
     try {
       var response = await http.post(
         Uri.parse(
@@ -103,6 +103,26 @@ class UserService {
         body: {
           "email": email,
         },
+      );
+      var decodedResponse = jsonDecode(response.body);
+      if (decodedResponse['status'] == 200) {
+        var data = decodedResponse['data'] as Map<String, dynamic>?;
+        var user = data!["user"];
+        return AppUser.fromJson(user);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> changePassword(otp, password, userId) async {
+    try {
+      var response = await http.put(
+        Uri.parse(
+          "$BACKEND_URL/user/reset",
+        ),
+        body: {"password": password, "userId": userId, "token": otp},
       );
       var decodedResponse = jsonDecode(response.body);
       if (decodedResponse['status'] == 200) {

@@ -86,7 +86,7 @@ class CameraService {
           body: {
             "id": camId,
             "systemId": systemId,
-            "newStatus": status,
+            "status": status,
           },
           headers: {
             HttpHeaders.authorizationHeader: _authToken,

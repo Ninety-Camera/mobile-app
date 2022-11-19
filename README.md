@@ -1,16 +1,20 @@
-# ninety
+# Ninety Camera - Smart Monitoring Platform for Security Cameras
 
-A new Flutter project.
+Ninety Camera is a smart monitoring platform for security cameras which can detect human intrusions from camera footage and notify users about the intruder. The whole system is come up with a desktop application, mobile applicatin and a web application(only for the system developer). This is the frontend of the mobile application.
 
-## Getting Started
+![GitHub language count](https://img.shields.io/github/languages/count/Ninety-Camera/mobile-app-new)
+![GitHub top language](https://img.shields.io/github/languages/top/Ninety-Camera/mobile-app-new)
+![GitHub repo size](https://img.shields.io/github/repo-size/Ninety-Camera/mobile-app-new)
 
-This project is a starting point for a Flutter application.
+## Technologies used
+ - Flutter
+ 
+## Setup
+ - Clone the Repository
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+You can find the backend of this application in [here](https://github.com/Ninety-Camera/web-backend)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+

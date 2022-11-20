@@ -15,6 +15,15 @@ users can view the images of the intrusion and the short video of the human intr
 ## Download the builded apk and appbundle
 You can download the builded releases of the application by following this [link](https://drive.google.com/drive/folders/1DyCxkVg88vhtqmSoLFGr0rkOJWZ-iGVd?usp=sharing)
 
+## Functionalities
+ - Register for the system
+ - Sign in to the system
+ - Scan QR code of the system and subscribe for intrusion notifications
+ - Receive intrusion notifications
+ - View system status
+ - Stop intrusion detection (Only for the owner of the system)
+ - View images and videos of recent intrusions.
+
 ## Setup for the development
 
 ### Install flutter SDK
